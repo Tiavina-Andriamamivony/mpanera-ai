@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Sparkles,
   UserCircle,
+  WandSparkles,
 } from "lucide-react"
 
 import {
@@ -30,13 +31,13 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 const NAV_ITEMS = [
   {
     href: "/app",
-    label: "Dashboard",
+    label: "Tableau de bord",
     icon: LayoutDashboard,
     isActive: (pathname: string) => pathname === "/app",
   },
   {
     href: "/app/providers/demo-provider",
-    label: "Provider",
+    label: "Prestataire",
     icon: Briefcase,
     isActive: (pathname: string) => pathname.startsWith("/app/providers"),
   },
@@ -73,7 +74,7 @@ export function PlatformAppShell({
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>
-              <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+              <SidebarGroupLabel>Menu</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {NAV_ITEMS.map((item) => {

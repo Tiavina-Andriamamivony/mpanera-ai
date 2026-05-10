@@ -98,7 +98,7 @@ export function Header({ leadingSlot }: HeaderProps) {
   return (
     <header
       className={cn(
-        "sticky top-0 bg-black z-50 w-full backdrop-blur-lg",
+        "sticky top-0 bg-black z-50 h-[73px] w-full backdrop-blur-lg border-b flex items-center",
         "bg-background/95 supports-backdrop-filter:bg-background/80"
       )}
     >
@@ -108,6 +108,20 @@ export function Header({ leadingSlot }: HeaderProps) {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+        <SearchModal data={SEARCH_PLACEHOLDER_ITEMS}>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
+              className="relative cursor-pointer md:border xl:h-9 xl:w-60 xl:justify-between xl:px-3 xl:py-2"
+              aria-label="Ouvrir la recherche"
+            >
+              <span className="hidden xl:inline-flex">Rechercher…</span>
+              <span className="sr-only xl:hidden">Rechercher</span>
+              <SearchIcon className="size-4" />
+            </Button>
+          </SearchModal>
+
           <div className="hidden items-center gap-1 lg:flex">
             <Show when="signed-out">
               <SignInButton mode="modal">
@@ -126,19 +140,7 @@ export function Header({ leadingSlot }: HeaderProps) {
             </Show>
           </div>
 
-          <SearchModal data={SEARCH_PLACEHOLDER_ITEMS}>
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              className="relative cursor-pointer md:border xl:h-9 xl:w-60 xl:justify-between xl:px-3 xl:py-2"
-              aria-label="Ouvrir la recherche"
-            >
-              <span className="hidden xl:inline-flex">Rechercher…</span>
-              <span className="sr-only xl:hidden">Rechercher</span>
-              <SearchIcon className="size-4" />
-            </Button>
-          </SearchModal>
+
 
           <Show when="signed-in">
             <div className="lg:hidden">

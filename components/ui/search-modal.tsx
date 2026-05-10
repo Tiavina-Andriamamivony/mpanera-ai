@@ -55,7 +55,7 @@ export function SearchModal({ children, data }: SearchModalProps) {
       <ModalTrigger asChild>{children}</ModalTrigger>
       <ModalContent className="gap-0 p-1">
         <ModalTitle className="sr-only">Recherche</ModalTitle>
-        <Command className="bg-background md:rounded-4xl md:border">
+        <Command className="bg-background md:rounded-lg md:border">
           <CommandInput
             className={cn(
               "placeholder:text-muted-foreground flex h-12 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50"

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from "next/link"
 
 export default function LandingPage() {
   return (
@@ -9,11 +9,11 @@ export default function LandingPage() {
             Mpanera AI
           </p>
           <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-            Landing page
+            Trouvez le bon prestataire près de chez vous
           </h1>
           <p className="text-base leading-7 text-muted-foreground sm:text-lg">
-            Point d&apos;entrée public de l&apos;application. Cette page peut ensuite accueillir le
-            hero, les sections produit et les CTA.
+            Une interface simple, pensée pour les familles et les petits budgets : confiance, prix
+            clairs, et une IA pour décrire votre besoin en langage courant.
           </p>
         </div>
 
@@ -28,7 +28,7 @@ export default function LandingPage() {
             href="/app/providers/demo-provider"
             className="inline-flex h-11 items-center rounded-full border border-border px-5 text-sm font-medium text-foreground"
           >
-            Voir un provider
+            Voir un prestataire (exemple)
           </Link>
         </div>
       </section>

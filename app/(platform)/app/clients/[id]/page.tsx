@@ -1,21 +1,30 @@
+import type { Metadata } from "next"
+
+import { ClientDetailView } from "@/components/client-detail-view"
+import { getDemoClientProfile } from "@/lib/demo-client"
+
 type ClientDetailsPageProps = {
   params: Promise<{
     id: string
   }>
 }
 
-export default async function ClientDetailsPage({ params }: ClientDetailsPageProps) {
+export async function generateMetadata({
+  params,
+}: ClientDetailsPageProps): Promise<Metadata> {
   const { id } = await params
+  const profile = getDemoClientProfile(id)
+  return {
+    title: `${profile.displayName} · Client · Mpanera`,
+    description: `Fiche client — ${profile.city}.`,
+  }
+}
 
-  return (
-    <section className="space-y-3">
-      <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-        Client
-      </p>
-      <h1 className="text-3xl font-semibold tracking-tight text-foreground">{id}</h1>
-      <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-        Détail d&apos;un client sur la route <code>/app/clients/{id}</code>.
-      </p>
-    </section>
-  )
+export default async function ClientDetailsPage({
+  params,
+}: ClientDetailsPageProps) {
+  const { id } = await params
+  const profile = getDemoClientProfile(id)
+
+  return <ClientDetailView profile={profile} />
 }
