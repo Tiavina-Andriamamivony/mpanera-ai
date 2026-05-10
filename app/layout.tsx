@@ -25,7 +25,10 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "mpanera-ai — Trouvez le bon prestataire à Madagascar",
+  title: {
+    default: "mpanera-ai — Trouvez le bon prestataire à Madagascar",
+    template: "%s · mpanera-ai",
+  },
   description:
     "La plateforme qui connecte les prestataires malgaches aux clients qui les cherchent. Décrivez ce que vous cherchez, l'IA fait le reste.",
 }
