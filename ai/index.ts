@@ -4,9 +4,14 @@ const INVOKE_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 const API_BASE = "https://ton-api.mpanera.mg"
 const MAX_TURNS = 3
 
+const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY
+if (!NVIDIA_API_KEY) {
+  console.error("NVIDIA_API_KEY manquante dans l'environnement")
+  process.exit(1)
+}
+
 const HEADERS = {
-  Authorization:
-    "Bearer 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",
+  Authorization: `Bearer ${NVIDIA_API_KEY}`,
   "Content-Type": "application/json",
   Accept: "text/event-stream",
 }

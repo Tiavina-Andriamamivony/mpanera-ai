@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CLIENT
+  PROVIDER
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REFUSED
+  CANCELLED
+  CONFIRMED
+}
+
+model User {
+  id                 String   @id @default(cuid())
+  clerkId            String   @unique
+  email              String   @unique
+  firstName          String?
+  lastName           String?
+  role               UserRole
+  district           String?
+  city               String?
+  onBoardingComplete Boolean  @default(false)
+  createdAt          DateTime @default(now())
+
+  provider       Provider?
+  aiMessages     AiMessage[]
+  clientRequests ServiceRequest[] @relation("ClientRequests")
+}
+
+model Provider {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id])
+  bio                String?
+  averageRating      Float    @default(0)
+  completedJobsCount Int      @default(0)
+  verified           Boolean  @default(false)
+  categoryId         String
+  category           Category @relation(fields: [categoryId], references: [id])
+  requests           ServiceRequest[] @relation("ProviderRequests")
+}
+
+model Category {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  slug      String     @unique
+  icon      String?
+  providers Provider[]
+}
+
+model AiMessage {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  sessionId  String
+  turn       Int
+  message    String
+  aiResponse String
+  meta       String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId, sessionId])
+}
+
+model ServiceRequest {
+  id                String        @id @default(cuid())
+  clientId          String
+  client            User          @relation("ClientRequests", fields: [clientId], references: [id])
+  providerId        String
+  provider          Provider      @relation("ProviderRequests", fields: [providerId], references: [id])
+  categoryId        String
+  description       String
+  status            RequestStatus @default(PENDING)
+  providerNotes     String?
+  priceMin          Int?
+  priceMax          Int?
+  clientFormAnswers String?
+  freeTextSpec      String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([clientId, status])
+  @@index([providerId, status])
+}
