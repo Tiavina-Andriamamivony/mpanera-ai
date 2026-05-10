@@ -1,4 +1,5 @@
 import * as React from "react"
+import Image from "next/image"
 import { Star, CheckCircle2, Users } from "lucide-react"
 import { cn } from "@/lib/utils"
 
