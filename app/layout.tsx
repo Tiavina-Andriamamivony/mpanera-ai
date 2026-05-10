@@ -1,23 +1,33 @@
 import type { Metadata } from "next"
 import { ClerkProvider } from "@clerk/nextjs"
-import { Geist, Geist_Mono } from "next/font/google"
+import { DM_Serif_Display, Fraunces, Inter } from "next/font/google"
 import { SiteHeader } from "@/components/site-header"
 import "./globals.css"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSerifDisplay = DM_Serif_Display({
+  variable: "--font-display",
+  weight: "400",
   subsets: ["latin"],
+  display: "swap",
 })
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const fraunces = Fraunces({
+  variable: "--font-serif",
   subsets: ["latin"],
+  display: "swap",
+  axes: ["SOFT", "WONK"],
+})
+
+const inter = Inter({
+  variable: "--font-sans",
+  subsets: ["latin"],
+  display: "swap",
 })
 
 export const metadata: Metadata = {
-  title: "mpanera-ai",
+  title: "mpanera-ai — Trouvez le bon prestataire à Madagascar",
   description:
-    "La plateforme qui connecte les prestataires malgaches aux clients qui les cherchent.",
+    "La plateforme qui connecte les prestataires malgaches aux clients qui les cherchent. Décrivez ce que vous cherchez, l'IA fait le reste.",
 }
 
 export default function RootLayout({
@@ -28,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${dmSerifDisplay.variable} ${fraunces.variable} ${inter.variable} font-sans antialiased`}
       >
         <ClerkProvider>
           <SiteHeader />

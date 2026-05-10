@@ -14,9 +14,9 @@ const GooeyLoader = React.forwardRef<HTMLDivElement, GooeyLoaderProps>(
   ({ className, primaryColor, secondaryColor, borderColor, ...props }, ref) => {
     // CSS variables for dynamic styling. Falls back to shadcn's theme variables.
     const style = {
-      "--gooey-primary-color": primaryColor || "hsl(var(--primary))",
-      "--gooey-secondary-color": secondaryColor || "hsl(var(--secondary))",
-      "--gooey-border-color": borderColor || "hsl(var(--border))",
+      "--gooey-primary-color": primaryColor || "var(--primary)",
+      "--gooey-secondary-color": secondaryColor || "var(--accent)",
+      "--gooey-border-color": borderColor || "var(--border)",
     } as React.CSSProperties;
 
     return (
