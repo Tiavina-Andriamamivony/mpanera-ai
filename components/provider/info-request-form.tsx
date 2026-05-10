@@ -44,12 +44,12 @@ function InfoRequestForm({ onSubmit }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-lg flex-col gap-6">
+    <form
+      onSubmit={handleSubmit}
+      className="mx-auto flex w-full max-w-lg flex-col gap-6"
+    >
       <div>
-        <label
-          htmlFor="note"
-          className="font-display mb-2 block text-base"
-        >
+        <label htmlFor="note" className="mb-2 block font-display text-base">
           Quelles infos supplémentaires souhaitez-vous demander&nbsp;?
         </label>
         <textarea
@@ -57,16 +57,16 @@ function InfoRequestForm({ onSubmit }: Props) {
           value={note}
           onChange={(e) => setNote(e.target.value)}
           rows={4}
-          placeholder="Ex&nbsp;: marque de l&apos;appareil, photo du problème, créneau souhaité…"
-          className="border-border bg-card focus:ring-primary w-full resize-none rounded-2xl border p-4 text-base leading-relaxed focus:ring-2 focus:outline-none"
+          placeholder="Ex&nbsp;: marque de l'appareil, photo du problème, créneau souhaité…"
+          className="w-full resize-none rounded-2xl border border-border bg-card p-4 text-base leading-relaxed focus:ring-2 focus:ring-primary focus:outline-none"
         />
       </div>
 
       <div>
-        <span className="font-display mb-2 block text-base">
+        <span className="mb-2 block font-display text-base">
           Votre prétention
         </span>
-        <div className="border-border bg-card mb-3 inline-flex rounded-full border p-1">
+        <div className="mb-3 inline-flex rounded-full border border-border bg-card p-1">
           <button
             type="button"
             onClick={() => setMode("range")}
@@ -102,22 +102,32 @@ function InfoRequestForm({ onSubmit }: Props) {
           />
         ) : (
           <div className="grid grid-cols-2 gap-3">
-            <PriceInput value={min} onChange={setMin} placeholder="Min" id="min" />
-            <PriceInput value={max} onChange={setMax} placeholder="Max" id="max" />
+            <PriceInput
+              value={min}
+              onChange={setMin}
+              placeholder="Min"
+              id="min"
+            />
+            <PriceInput
+              value={max}
+              onChange={setMax}
+              placeholder="Max"
+              id="max"
+            />
           </div>
         )}
       </div>
 
       <button
         type="submit"
-        className="bg-primary text-primary-foreground group inline-flex items-center justify-center gap-3 self-start rounded-full px-7 py-4 text-base font-medium shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:shadow-primary/40"
+        className="group inline-flex items-center justify-center gap-3 self-start rounded-full bg-primary px-7 py-4 text-base font-medium text-primary-foreground shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:shadow-primary/40"
       >
         Envoyer au client
-        <ArrowUpRight className="size-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </button>
 
       {touched && !isValid && (
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           Merci de remplir ces deux informations avant d&apos;envoyer.
         </p>
       )}
@@ -137,7 +147,7 @@ function PriceInput({
   id: string
 }) {
   return (
-    <div className="border-border bg-card focus-within:ring-primary flex items-center rounded-2xl border focus-within:ring-2">
+    <div className="flex items-center rounded-2xl border border-border bg-card focus-within:ring-2 focus-within:ring-primary">
       <input
         id={id}
         type="number"
@@ -148,7 +158,7 @@ function PriceInput({
         placeholder={placeholder}
         className="w-full bg-transparent px-4 py-3 text-base focus:outline-none"
       />
-      <span className="text-muted-foreground pr-4 text-sm">Ar</span>
+      <span className="pr-4 text-sm text-muted-foreground">Ar</span>
     </div>
   )
 }

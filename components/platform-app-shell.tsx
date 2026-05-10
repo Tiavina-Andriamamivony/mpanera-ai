@@ -63,7 +63,11 @@ export function PlatformAppShell({
           <SidebarHeader className="gap-2 border-b border-sidebar-border">
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild size="lg" tooltip="Retour à l'accueil">
+                <SidebarMenuButton
+                  asChild
+                  size="lg"
+                  tooltip="Retour à l'accueil"
+                >
                   <Link href="/">
                     <Sparkles className="size-4 shrink-0 text-sidebar-primary" />
                     <span className="truncate font-semibold">Mpanera AI</span>

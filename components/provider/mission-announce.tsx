@@ -38,10 +38,10 @@ function MissionAnnounce({ providerName, detail, problem, onContinue }: Props) {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col items-center gap-8 text-center">
-      <p className="font-display min-h-[6rem] text-3xl leading-snug tracking-tight sm:text-4xl">
+      <p className="min-h-[6rem] font-display text-3xl leading-snug tracking-tight sm:text-4xl">
         {displayed}
         {!done && (
-          <span className="bg-foreground ml-1 inline-block h-7 w-0.5 animate-pulse align-middle" />
+          <span className="ml-1 inline-block h-7 w-0.5 animate-pulse bg-foreground align-middle" />
         )}
       </p>
 
@@ -52,16 +52,16 @@ function MissionAnnounce({ providerName, detail, problem, onContinue }: Props) {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="flex w-full flex-col items-center gap-6"
         >
-          <blockquote className="border-accent text-muted-foreground w-full border-l-2 pl-5 text-left font-serif text-lg italic leading-relaxed">
+          <blockquote className="w-full border-l-2 border-accent pl-5 text-left font-serif text-lg leading-relaxed text-muted-foreground italic">
             « {problem} »
           </blockquote>
           <button
             type="button"
             onClick={onContinue}
-            className="bg-primary text-primary-foreground group inline-flex items-center gap-3 rounded-full px-7 py-4 text-base font-medium shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:shadow-primary/40"
+            className="group inline-flex items-center gap-3 rounded-full bg-primary px-7 py-4 text-base font-medium text-primary-foreground shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:shadow-primary/40"
           >
             Continuer
-            <ArrowUpRight className="size-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </button>
         </motion.div>
       )}

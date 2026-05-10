@@ -2,11 +2,7 @@ import Link from "next/link"
 import { ArrowLeftIcon, MapPinIcon, StarIcon } from "lucide-react"
 
 import type { ProviderProfile } from "@/lib/demo-provider"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -45,7 +41,7 @@ function RatingRow({
           )
         })}
       </div>
-      <span className="font-medium tabular-nums text-foreground">
+      <span className="font-medium text-foreground tabular-nums">
         {rating.toFixed(1)}
       </span>
       <span className="text-sm text-muted-foreground">
@@ -70,15 +66,18 @@ export function ProviderDetailView({ profile }: ProviderDetailViewProps) {
   const avatarSeed = encodeURIComponent(profile.id)
 
   return (
-    <div className="space-y-4 mx-auto bg-orange-100">
-      <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+    <div className="mx-auto space-y-4 bg-orange-100">
+      <p className="text-sm font-medium tracking-[0.2em] text-muted-foreground uppercase">
         Prestataire
       </p>
 
       <Card className="overflow-hidden border-border/80 shadow">
         <CardHeader className="gap-6 border-b border-border bg-muted/20 pb-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-start">
-            <Avatar size="lg" className="size-28 ring-4 ring-background md:size-32">
+            <Avatar
+              size="lg"
+              className="size-28 ring-4 ring-background md:size-32"
+            >
               <AvatarImage
                 src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`}
                 alt=""
@@ -93,7 +92,9 @@ export function ProviderDetailView({ profile }: ProviderDetailViewProps) {
                 <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                   {profile.displayName}
                 </h1>
-                <p className="text-base text-muted-foreground">{profile.category}</p>
+                <p className="text-base text-muted-foreground">
+                  {profile.category}
+                </p>
               </div>
 
               <RatingRow
@@ -129,7 +130,7 @@ export function ProviderDetailView({ profile }: ProviderDetailViewProps) {
         <CardContent className="space-y-8 pt-8">
           <div className="grid gap-6 sm:grid-cols-3">
             <div className="rounded-lg border border-border bg-muted/30 px-4 py-3 text-center sm:text-left">
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
                 Missions réalisées
               </p>
               <p className="mt-1 text-2xl font-semibold tabular-nums">
@@ -137,7 +138,7 @@ export function ProviderDetailView({ profile }: ProviderDetailViewProps) {
               </p>
             </div>
             <div className="rounded-lg border border-border bg-muted/30 px-4 py-3 text-center sm:text-left">
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
                 Expérience
               </p>
               <p className="mt-1 text-2xl font-semibold tabular-nums">
@@ -145,7 +146,7 @@ export function ProviderDetailView({ profile }: ProviderDetailViewProps) {
               </p>
             </div>
             <div className="rounded-lg border border-border bg-muted/30 px-4 py-3 text-center sm:text-left">
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
                 Réactivité
               </p>
               <p className="mt-1 text-lg font-semibold">Sous 24 h</p>
@@ -167,14 +168,21 @@ export function ProviderDetailView({ profile }: ProviderDetailViewProps) {
             <Button size="lg" className="w-full sm:w-auto" asChild>
               <Link href="/app/ai-form">Décrire mon besoin avec l&apos;IA</Link>
             </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto"
+              asChild
+            >
               <Link href="/app">Voir d&apos;autres prestataires</Link>
             </Button>
           </div>
 
           <p className="text-xs text-muted-foreground">
-            Identifiant&nbsp;: <code className="rounded bg-muted px-1.5 py-0.5">{profile.id}</code>{" "}
-            · Les données ci-dessus sont des exemples pour la démo (USER_ROADMAP §1.5).
+            Identifiant&nbsp;:{" "}
+            <code className="rounded bg-muted px-1.5 py-0.5">{profile.id}</code>{" "}
+            · Les données ci-dessus sont des exemples pour la démo (USER_ROADMAP
+            §1.5).
           </p>
         </CardContent>
       </Card>

@@ -160,30 +160,41 @@ function ProjectCard({ project }: { project: Project }) {
           <motion.div
             variants={logoVariants}
             whileHover="hover"
-            className={`h-12 w-12 ${project.logoColor} flex-shrink-0 rounded-lg text-lg font-semibold text-white shadow-sm flex items-center justify-center`}
+            className={`h-12 w-12 ${project.logoColor} flex flex-shrink-0 items-center justify-center rounded-lg text-lg font-semibold text-white shadow-sm`}
           >
             {project.logoIcon}
           </motion.div>
 
           <div className="min-w-0 flex-1">
-            <motion.div className="mb-2 flex items-center gap-3" variants={childVariants}>
-              <h3 className="text-sm font-semibold text-gray-900">{project.title}</h3>
+            <motion.div
+              className="mb-2 flex items-center gap-3"
+              variants={childVariants}
+            >
+              <h3 className="text-sm font-semibold text-gray-900">
+                {project.title}
+              </h3>
               <div className="h-3 w-px bg-gray-400"></div>
               <motion.span
                 whileHover={{ scale: 1 }}
                 whileTap={{ scale: 0.98 }}
                 className={`rounded-full px-2 py-0.5 text-xs font-medium transition-all duration-200 ${
-                  project.status === "Paid" ? "text-gray-200 shadow-sm" : "text-gray-700"
+                  project.status === "Paid"
+                    ? "text-gray-200 shadow-sm"
+                    : "text-gray-700"
                 }`}
                 style={{
-                  backgroundColor: project.status === "Paid" ? "#272D41" : "#D4DADB",
+                  backgroundColor:
+                    project.status === "Paid" ? "#272D41" : "#D4DADB",
                 }}
               >
                 {project.status}
               </motion.span>
             </motion.div>
 
-            <motion.p className="mb-4 text-sm font-medium text-gray-600" variants={childVariants}>
+            <motion.p
+              className="mb-4 text-sm font-medium text-gray-600"
+              variants={childVariants}
+            >
               {project.pricePerHour}
             </motion.p>
 
@@ -196,7 +207,10 @@ function ProjectCard({ project }: { project: Project }) {
                   exit="hidden"
                   className="overflow-hidden"
                 >
-                  <motion.div className="mb-4 flex gap-2" variants={childVariants}>
+                  <motion.div
+                    className="mb-4 flex gap-2"
+                    variants={childVariants}
+                  >
                     {project.categories.map((category, index) => (
                       <motion.span
                         key={index}
@@ -204,7 +218,7 @@ function ProjectCard({ project }: { project: Project }) {
                         whileHover="hover"
                         whileTap="tap"
                         custom={index}
-                        className="cursor-pointer select-none rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm"
+                        className="cursor-pointer rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm select-none"
                         style={{ backgroundColor: "#D4DADB" }}
                       >
                         {category}
@@ -225,11 +239,17 @@ function ProjectCard({ project }: { project: Project }) {
                   >
                     <motion.div
                       whileHover={{ scale: 1, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 25,
+                      }}
                     >
                       <MapPin className="h-4 w-4" />
                     </motion.div>
-                    <span className="text-xs font-medium">{project.location}</span>
+                    <span className="text-xs font-medium">
+                      {project.location}
+                    </span>
                     <div className="mx-1 h-3 w-px bg-gray-300"></div>
                     <span className="text-xs">{project.timeAgo}</span>
                   </motion.div>
@@ -269,7 +289,12 @@ function ProjectCard({ project }: { project: Project }) {
 export function ProjectCards({ projects }: ProjectCardsProps) {
   return (
     <div className="mx-auto w-full max-w-[1920px] p-6">
-      <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+      <motion.div
+        className="space-y-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
         {projects.map((project, index) => (
           <motion.div
             key={project.id}

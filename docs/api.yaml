@@ -1,0 +1,895 @@
+openapi: 3.1.0
+info:
+  title: Mpanera API
+  version: 0.1.0
+  description: |
+    REST API for the Mpanera marketplace — connecting clients with local
+    service providers in Madagascar (plumbing, electrical, cleaning, etc.).
+
+    Authentication is delegated to Clerk. Clients authenticate via the
+    Clerk SDK; the resulting Clerk session token (JWT) is sent as a
+    bearer token on every API request. The backend verifies the token
+    against Clerk's JWKS and reads the user identity (`sub` claim →
+    `clerkId`) plus `publicMetadata.role`.
+
+    Account fields (`email`, `username`, `firstName`, `lastName`) are
+    owned by Clerk and mirrored read-only onto the local `User` via the
+    Clerk webhook. The `role` (`CLIENT` / `PROVIDER`) is set at sign-up
+    via Clerk `publicMetadata.role`.
+  contact:
+    name: Mpanera Team
+    email: your@team.email
+    url: https://your-team-website.com
+  license:
+    name: Proprietary
+
+servers:
+  - url: https://prod-url.com
+    description: Production environment
+  - url: https://preprod-url.com
+    description: Pre-production environment
+  - url: http://localhost:9090
+    description: Local development environment
+
+tags:
+  - name: Docs
+    description: API documentation entry points
+  - name: Health
+    description: Liveness and database health checks
+  - name: Users
+    description: Local user records (mirrored from Clerk)
+  - name: Categories
+    description: Service category catalogue
+  - name: Providers
+    description: Provider profiles
+  - name: AiMessages
+    description: AI-assisted conversation history for the authenticated user
+  - name: Webhooks
+    description: Inbound webhooks from Clerk
+
+security:
+  - bearerAuth: []
+
+paths:
+  /:
+    get:
+      operationId: addViewControllers
+      tags: [ Docs ]
+      summary: Redirect root path to Swagger UI
+      security: [ ]
+      responses:
+        302:
+          description: Redirects to Swagger UI
+          headers:
+            Location:
+              description: URL to redirect
+              schema:
+                type: string
+                format: uri
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServer'
+
+  /ping:
+    get:
+      operationId: ping
+      tags: [ Health ]
+      summary: Check if the server is alive
+      security: [ ]
+      responses:
+        200:
+          description: A message showing that the server is alive
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: pong
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServer'
+
+  /health/db:
+    get:
+      operationId: checkDbHealth
+      tags: [ Health ]
+      summary: Health check for the database
+      description: Returns a paginated list of Dummy entities to verify database connectivity.
+      security: [ ]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        200:
+          description: Successful database health check
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DummyPageResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        500:
+          $ref: '#/components/responses/InternalServer'
+
+  /categories/names:
+    get:
+      operationId: findAllCategoryNames
+      tags: [ Categories ]
+      summary: List all category names
+      security: [ ]
+      responses:
+        "200":
+          description: List of category names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        500:
+          $ref: '#/components/responses/InternalServer'
+
+  /categories/{category-name}:
+    get:
+      operationId: getCategoryByName
+      tags: [ Categories ]
+      summary: Get a category by name
+      security: [ ]
+      parameters:
+        - in: path
+          name: category-name
+          required: true
+          schema:
+            type: string
+          description: The category name
+      responses:
+        "200":
+          description: Category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /providers/{categoryId}:
+    get:
+      operationId: getTop5ProvidersByCategoryId
+      tags: [ Providers ]
+      summary: Get the top 5 providers for a given category
+      security: [ ]
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Up to five providers ranked for the given category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Provider"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /users/{id}:
+    get:
+      operationId: findUserById
+      tags: [ Users ]
+      summary: Get a user by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: The user record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /users/update/{id}:
+    post:
+      operationId: updateUser
+      tags: [ Users ]
+      summary: Update a user's profile fields
+      description: |
+        Updates user-owned fields (`city`, `district`, `onBoardingComplete`).
+        Identity fields (`email`, `username`, `firstName`, `lastName`) are
+        owned by Clerk and cannot be modified through this endpoint.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateRequest"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /ai-messages:
+    get:
+      operationId: findAllAiMessages
+      tags: [ AiMessages ]
+      summary: List all AI messages for the authenticated user
+      responses:
+        "200":
+          description: Messages owned by the caller
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      operationId: saveAiMessage
+      tags: [ AiMessages ]
+      summary: Save a single AI message exchange
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessagePost"
+      responses:
+        "201":
+          description: Created message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /ai-messages/batch:
+    post:
+      operationId: saveAiMessageBatch
+      tags: [ AiMessages ]
+      summary: Save several AI message exchanges in a single call
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/MessagePost"
+      responses:
+        "201":
+          description: Created messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /ai-messages/paginated:
+    get:
+      operationId: findAiMessagesPaginated
+      tags: [ AiMessages ]
+      summary: List the caller's AI messages, paginated
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        "200":
+          description: Paginated messages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessagePageResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /ai-messages/since:
+    get:
+      operationId: findAiMessagesSince
+      tags: [ AiMessages ]
+      summary: List the caller's AI messages from the last N hours
+      parameters:
+        - in: query
+          name: hours
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: Number of hours to look back
+      responses:
+        "200":
+          description: Messages within the requested window
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /ai-messages/last-month:
+    get:
+      operationId: findAiMessagesLastMonth
+      tags: [ AiMessages ]
+      summary: List the caller's AI messages from the last month
+      responses:
+        "200":
+          description: Messages from the last month
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /ai-messages/count:
+    get:
+      operationId: countAiMessages
+      tags: [ AiMessages ]
+      summary: Count the caller's AI messages
+      responses:
+        "200":
+          description: Total number of messages owned by the caller
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /webhooks/clerk:
+    post:
+      operationId: handleClerkWebhook
+      tags: [ Webhooks ]
+      summary: Receive Clerk user lifecycle events
+      description: |
+        Endpoint called by Clerk to push `user.created`, `user.updated`
+        and `user.deleted` events. Requests are signed by Svix; the
+        server verifies the `svix-id`, `svix-timestamp` and
+        `svix-signature` headers against the configured signing secret
+        before processing the body.
+
+        On `user.created` / `user.updated` the server upserts the local
+        `User` (mirroring `email`, `username`, `firstName`, `lastName`,
+        `publicMetadata.role`).
+      security: [ ]
+      parameters:
+        - in: header
+          name: svix-id
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: svix-timestamp
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: svix-signature
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClerkWebhookEvent"
+      responses:
+        "200":
+          description: Event acknowledged
+        "400":
+          description: Malformed payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Invalid Svix signature
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Clerk session token (JWT) issued by the Clerk frontend SDK.
+        The backend verifies the token against Clerk's JWKS and reads
+        the user identity (`sub` → `clerkId`) and `publicMetadata.role`.
+
+  parameters:
+    Page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 0
+      description: Page number (0-based)
+    PageSize:
+      name: size
+      in: query
+      schema:
+        type: integer
+        default: 10
+      description: Page size
+
+  schemas:
+    PageResponse:
+      type: object
+      required:
+        - content
+        - pageable
+        - total_elements
+        - total_pages
+        - last
+        - first
+        - size
+        - number
+        - number_of_elements
+        - empty
+      description: |
+        Paginated response wrapper matching the JSON serialization of
+        org.springframework.data.domain.Page. The pagination metadata
+        is nested under the `pageable` object, consistent with Spring
+        Data defaults.
+      properties:
+        content:
+          type: array
+          description: Page content — the list of elements for the current page.
+          items: {}
+        pageable:
+          type: object
+          description: Pagination state used to produce this page.
+          properties:
+            page_number:
+              type: integer
+              description: Zero-based current page index.
+            page_size:
+              type: integer
+              description: Requested number of items per page.
+            offset:
+              type: integer
+              format: int64
+              description: Offset of the first element of this page relative to the full result set.
+            sort:
+              $ref: '#/components/schemas/SortDescriptor'
+            paged:
+              type: boolean
+              description: Whether pagination is applied.
+            unpaged:
+              type: boolean
+              description: Whether pagination is disabled.
+        total_elements:
+          type: integer
+          format: int64
+          description: Total number of elements across all pages.
+        total_pages:
+          type: integer
+          description: Total number of pages available.
+        last:
+          type: boolean
+          description: Whether this is the last page.
+        first:
+          type: boolean
+          description: Whether this is the first page.
+        size:
+          type: integer
+          description: Effective page size (number of elements requested per page).
+        number:
+          type: integer
+          description: Zero-based index of the current page.
+        number_of_elements:
+          type: integer
+          description: Number of elements on the current page.
+        empty:
+          type: boolean
+          description: Whether the current page has no content.
+        sort:
+          $ref: '#/components/schemas/SortDescriptor'
+
+    SortDescriptor:
+      type: object
+      description: Sort state descriptor returned by Spring Data.
+      properties:
+        empty:
+          type: boolean
+          description: Whether no sort orders are applied.
+        sorted:
+          type: boolean
+          description: Whether at least one sort order is applied.
+        unsorted:
+          type: boolean
+          description: Whether no sort orders are applied (inverse of sorted).
+
+    DummyPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageResponse'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/Dummy'
+
+    MessagePageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageResponse'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/Message'
+
+    DateTime:
+      type: string
+      format: date-time
+      description: Date and time in ISO 8601 format (RFC 3339)
+      example: '2025-12-06T11:23:45Z'
+
+    UUID:
+      type: string
+      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      format: uuid
+      example: e6b5cc3e-eaaa-4cb3-912c-e059e983bb78
+
+    Dummy:
+      type: object
+      required: [ id, description ]
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+
+    UserRole:
+      type: string
+      enum: [ CLIENT, PROVIDER ]
+
+    User:
+      type: object
+      description: |
+        Local user record. `email`, `username`, `firstName` and
+        `lastName` are read-only mirrors of the Clerk identity (kept in
+        sync via the Clerk webhook); the API never accepts writes for
+        them. `role` is sourced from Clerk `publicMetadata.role` at
+        user creation.
+      required:
+        - id
+        - clerkId
+        - email
+        - role
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        clerkId:
+          type: string
+          description: Clerk user id (the `sub` claim of the session token).
+        email:
+          type: string
+          format: email
+          readOnly: true
+        emailVerified:
+          type: boolean
+        username:
+          type: string
+          nullable: true
+          readOnly: true
+        firstName:
+          type: string
+          nullable: true
+          readOnly: true
+        lastName:
+          type: string
+          nullable: true
+          readOnly: true
+        district:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        role:
+          $ref: '#/components/schemas/UserRole'
+        onBoardingComplete:
+          type: boolean
+        createdAt:
+          $ref: '#/components/schemas/DateTime'
+
+    Provider:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          required:
+            - averageRating
+            - completedJobsCount
+            - verified
+          properties:
+            bio:
+              type: string
+              nullable: true
+            averageRating:
+              type: number
+              format: double
+              minimum: 0
+              maximum: 5
+            completedJobsCount:
+              type: integer
+              format: int64
+              minimum: 0
+            verified:
+              type: boolean
+            category:
+              $ref: '#/components/schemas/Category'
+            updatedAt:
+              $ref: '#/components/schemas/DateTime'
+
+    Category:
+      type: object
+      required: [ id, name, slug ]
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        slug:
+          type: string
+        icon:
+          type: string
+          nullable: true
+
+    Message:
+      type: object
+      description: A single AI message exchange (user prompt + AI response) tied to a User.
+      required:
+        - id
+        - message
+        - aiResponse
+        - createdAt
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        user:
+          $ref: '#/components/schemas/User'
+        message:
+          type: string
+          description: User-supplied prompt.
+        aiResponse:
+          type: string
+          description: AI-generated response.
+        createdAt:
+          $ref: '#/components/schemas/DateTime'
+
+    UserUpdateRequest:
+      type: object
+      description: Fields the API caller is allowed to update on a User.
+      properties:
+        city:
+          type: string
+          nullable: true
+        district:
+          type: string
+          nullable: true
+        onBoardingComplete:
+          type: boolean
+
+    MUser:
+      type: object
+      required: [ clerkId, message ]
+      properties:
+        clerkId:
+          type: string
+        message:
+          type: string
+          minLength: 1
+
+    MAI:
+      type: object
+      required: [ response ]
+      properties:
+        response:
+          type: string
+          minLength: 1
+
+    MessagePost:
+      type: object
+      required: [ userRequest, aiResponse ]
+      properties:
+        userRequest:
+          $ref: '#/components/schemas/MUser'
+        aiResponse:
+          $ref: '#/components/schemas/MAI'
+
+    ClerkEmailVerification:
+      type: object
+      properties:
+        status:
+          type: string
+          example: verified
+
+    ClerkEmailAddress:
+      type: object
+      required: [ id, emailAddress ]
+      properties:
+        id:
+          type: string
+        emailAddress:
+          type: string
+          format: email
+        verification:
+          $ref: '#/components/schemas/ClerkEmailVerification'
+
+    ClerkPublicMetadata:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/UserRole'
+
+    ClerkWebhookUserData:
+      type: object
+      required: [ id ]
+      properties:
+        id:
+          type: string
+          description: Clerk user id (mapped to `User.clerkId`).
+        username:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        primaryEmailAddressId:
+          type: string
+          nullable: true
+        emailAddresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClerkEmailAddress'
+        publicMetadata:
+          $ref: '#/components/schemas/ClerkPublicMetadata'
+
+    ClerkWebhookEvent:
+      type: object
+      required: [ type, data ]
+      properties:
+        type:
+          type: string
+          enum: [ user.created, user.updated, user.deleted ]
+        data:
+          $ref: '#/components/schemas/ClerkWebhookUserData'
+
+    ErrorResponse:
+      type: object
+      required:
+        - timestamp
+        - status
+        - error
+        - message
+        - path
+      description: Standard error response format
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/DateTime'
+        status:
+          type: integer
+          description: HTTP status code
+        error:
+          type: string
+          description: HTTP status reason phrase
+        message:
+          type: string
+          description: Human-readable error description
+        path:
+          type: string
+          description: The relative URI of the request that caused the error.
+          example: /the/current/endpoint
+        errorCode:
+          type: string
+          description: Application-specific error code
+          enum:
+            - MISSING_REQUIRED_PARAMETER
+            - MISSING_REQUIRED_PART
+            - INVALID_PARAMETER
+            - MALFORMED_JSON
+            - METHOD_NOT_ALLOWED
+            - AUTHORIZATION_DENIED
+            - DATA_CONFLICT
+            - DUPLICATE_EMAIL
+            - DUPLICATE_CLERK_ID
+            - ENTITY_NOT_FOUND
+            - BAD_FORM
+            - MISSING_AUTHORIZATION
+            - WEBHOOK_VERIFICATION_FAILED
+            - MALFORMED_WEBHOOK_PAYLOAD
+            - INTERNAL_SERVER_ERROR
+            - VALIDATION_ERROR
+
+  responses:
+    InternalServer:
+      description: Internal Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request parameters or payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient permissions for requested operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Conflict:
+      description: Resource conflict or duplicate entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

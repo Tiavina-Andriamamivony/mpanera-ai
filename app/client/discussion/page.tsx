@@ -114,10 +114,10 @@ export default function DiscussionPage() {
         </motion.div>
 
         <div className="flex flex-col items-center gap-3">
-          <h1 className="font-display max-w-2xl text-center text-4xl tracking-tight sm:text-5xl">
+          <h1 className="max-w-2xl text-center font-display text-4xl tracking-tight sm:text-5xl">
             Que puis-je faire pour vous aujourd&apos;hui&nbsp;?
           </h1>
-          <p className="font-serif text-muted-foreground max-w-xl text-center text-lg italic">
+          <p className="max-w-xl text-center font-serif text-lg text-muted-foreground italic">
             Trouvons le prestataire parfait pour votre besoin.
           </p>
         </div>
@@ -128,7 +128,7 @@ export default function DiscussionPage() {
               key={prompt}
               type="button"
               onClick={() => setDraft(prompt)}
-              className="border-border bg-card/60 hover:bg-card rounded-full border px-4 py-2 text-sm backdrop-blur transition"
+              className="rounded-full border border-border bg-card/60 px-4 py-2 text-sm backdrop-blur transition hover:bg-card"
             >
               {prompt}
             </button>
@@ -148,13 +148,13 @@ export default function DiscussionPage() {
 
   return (
     <main>
-      <div className="bg-background/80 border-border sticky top-16 z-10 flex h-14 items-center gap-3 border-b px-6 backdrop-blur">
+      <div className="sticky top-16 z-10 flex h-14 items-center gap-3 border-b border-border bg-background/80 px-6 backdrop-blur">
         <motion.div layoutId={ORB_LAYOUT_ID} transition={ORB_TRANSITION}>
           <SiriOrb size="40px" animationDuration={20} />
         </motion.div>
         <div>
           <p className="font-display text-base leading-none">mpanera</p>
-          <p className="text-muted-foreground mt-0.5 text-xs">
+          <p className="mt-0.5 text-xs text-muted-foreground">
             {isThinking ? "réfléchit…" : "en ligne"}
           </p>
         </div>
@@ -178,7 +178,7 @@ export default function DiscussionPage() {
         <div ref={endRef} />
       </div>
 
-      <div className="from-background via-background/95 sticky bottom-0 bg-gradient-to-t to-transparent px-6 pt-6 pb-4">
+      <div className="sticky bottom-0 bg-gradient-to-t from-background via-background/95 to-transparent px-6 pt-6 pb-4">
         <div className="mx-auto max-w-2xl">
           <MpaneraPromptBox
             value={draft}

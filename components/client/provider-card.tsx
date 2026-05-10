@@ -76,7 +76,7 @@ function AvailabilityBadge({
 }) {
   if (availability.kind === "available") {
     return (
-      <span className="bg-primary/15 text-primary inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-2.5 py-1 text-xs font-medium text-primary">
         <span className="size-1.5 rounded-full bg-primary" />
         Disponible
       </span>
@@ -84,7 +84,7 @@ function AvailabilityBadge({
   }
   if (availability.kind === "near") {
     return (
-      <span className="bg-accent/20 text-accent-foreground inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/20 px-2.5 py-1 text-xs font-medium text-accent-foreground">
         <MapPin className="size-3" />
         Proche · {availability.distanceKm} km
       </span>
@@ -115,13 +115,13 @@ function ProviderCard({ provider, selected, onToggle }: Props) {
         }
       }}
       className={cn(
-        "group border-border bg-card relative flex cursor-pointer flex-col gap-4 rounded-3xl border p-6 text-left shadow-sm transition",
+        "group relative flex cursor-pointer flex-col gap-4 rounded-3xl border border-border bg-card p-6 text-left shadow-sm transition",
         "hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10",
-        selected && "ring-primary shadow-primary/20 ring-2 shadow-xl"
+        selected && "shadow-xl ring-2 shadow-primary/20 ring-primary"
       )}
     >
       {selected && (
-        <span className="bg-primary text-primary-foreground absolute -top-2 -right-2 grid size-7 place-items-center rounded-full shadow-md">
+        <span className="absolute -top-2 -right-2 grid size-7 place-items-center rounded-full bg-primary text-primary-foreground shadow-md">
           <Check className="size-4" />
         </span>
       )}
@@ -129,7 +129,7 @@ function ProviderCard({ provider, selected, onToggle }: Props) {
       <div className="flex items-start gap-4">
         <div
           className={cn(
-            "grid size-16 place-items-center overflow-hidden rounded-2xl font-display text-xl shrink-0",
+            "grid size-16 shrink-0 place-items-center overflow-hidden rounded-2xl font-display text-xl",
             palette
           )}
         >
@@ -147,8 +147,8 @@ function ProviderCard({ provider, selected, onToggle }: Props) {
         </div>
 
         <div className="min-w-0 flex-1">
-          <h3 className="font-display truncate text-xl">{provider.name}</h3>
-          <p className="text-muted-foreground mt-0.5 text-sm">
+          <h3 className="truncate font-display text-xl">{provider.name}</h3>
+          <p className="mt-0.5 text-sm text-muted-foreground">
             {provider.city}
           </p>
           <div className="mt-2 flex items-center gap-2 text-sm">
@@ -166,7 +166,7 @@ function ProviderCard({ provider, selected, onToggle }: Props) {
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <span className="bg-secondary text-secondary-foreground inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
+        <span className="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
           {provider.category}
         </span>
         <AvailabilityBadge availability={provider.availability} />
@@ -180,7 +180,7 @@ function ProviderCard({ provider, selected, onToggle }: Props) {
               e.stopPropagation()
               setOpen(true)
             }}
-            className="text-muted-foreground hover:text-foreground mt-auto self-start text-sm font-medium underline-offset-4 hover:underline"
+            className="mt-auto self-start text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
             En savoir plus
           </button>
@@ -193,7 +193,7 @@ function ProviderCard({ provider, selected, onToggle }: Props) {
             <div className="flex items-center gap-4">
               <div
                 className={cn(
-                  "grid size-16 place-items-center rounded-2xl font-display text-xl shrink-0",
+                  "grid size-16 shrink-0 place-items-center rounded-2xl font-display text-xl",
                   palette
                 )}
               >
@@ -203,7 +203,7 @@ function ProviderCard({ provider, selected, onToggle }: Props) {
                 <DialogTitle className="font-display text-2xl">
                   {provider.name}
                 </DialogTitle>
-                <DialogDescription className="text-muted-foreground text-sm">
+                <DialogDescription className="text-sm text-muted-foreground">
                   {provider.category} · {provider.city}
                 </DialogDescription>
               </div>
@@ -222,7 +222,7 @@ function ProviderCard({ provider, selected, onToggle }: Props) {
                 d&apos;expérience
               </span>
             </div>
-            <p className="font-serif italic leading-relaxed">{provider.bio}</p>
+            <p className="font-serif leading-relaxed italic">{provider.bio}</p>
             <AvailabilityBadge availability={provider.availability} />
           </div>
         </DialogContent>

@@ -65,11 +65,11 @@ function ProviderConfirmation({ open, providers, onClose, onEdit }: Props) {
             role="status"
             className="flex flex-col items-center gap-3 py-6 text-center"
           >
-            <span className="bg-primary/15 text-primary grid size-14 place-items-center rounded-full text-2xl">
+            <span className="grid size-14 place-items-center rounded-full bg-primary/15 text-2xl text-primary">
               🌿
             </span>
             <p className="font-display text-2xl">Demande envoyée</p>
-            <p className="text-muted-foreground font-serif italic">
+            <p className="font-serif text-muted-foreground italic">
               Misaotra betsaka. Ils vous reviendront très vite.
             </p>
           </div>
@@ -80,7 +80,7 @@ function ProviderConfirmation({ open, providers, onClose, onEdit }: Props) {
                 Vous allez contacter {count}{" "}
                 {count > 1 ? "prestataires" : "prestataire"}.
               </DialogTitle>
-              <DialogDescription className="text-muted-foreground font-serif italic">
+              <DialogDescription className="font-serif text-muted-foreground italic">
                 Ils recevront votre demande et vous reviendront très vite.
               </DialogDescription>
             </DialogHeader>
@@ -89,19 +89,19 @@ function ProviderConfirmation({ open, providers, onClose, onEdit }: Props) {
               {providers.map((p, i) => (
                 <li
                   key={p.id}
-                  className="border-border bg-card flex items-center gap-3 rounded-2xl border p-3"
+                  className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3"
                 >
                   <span
                     className={cn(
-                      "grid size-10 place-items-center rounded-xl font-display text-sm shrink-0",
+                      "grid size-10 shrink-0 place-items-center rounded-xl font-display text-sm",
                       PALETTES[i % PALETTES.length]
                     )}
                   >
                     {getInitials(p.name)}
                   </span>
                   <div className="min-w-0">
-                    <p className="font-display truncate text-base">{p.name}</p>
-                    <p className="text-muted-foreground truncate text-xs">
+                    <p className="truncate font-display text-base">{p.name}</p>
+                    <p className="truncate text-xs text-muted-foreground">
                       {p.category} · {p.city}
                     </p>
                   </div>
@@ -113,14 +113,14 @@ function ProviderConfirmation({ open, providers, onClose, onEdit }: Props) {
               <button
                 type="button"
                 onClick={handleConfirm}
-                className="bg-primary text-primary-foreground inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:shadow-primary/40"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:shadow-primary/40"
               >
                 Confirmer et envoyer
               </button>
               <button
                 type="button"
                 onClick={onEdit}
-                className="border-border hover:bg-card inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-medium transition"
+                className="inline-flex items-center justify-center rounded-full border border-border px-6 py-3 text-sm font-medium transition hover:bg-card"
               >
                 Modifier ma sélection
               </button>

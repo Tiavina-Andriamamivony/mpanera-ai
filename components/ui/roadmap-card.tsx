@@ -1,25 +1,25 @@
-"use client";
-import { motion } from "motion/react";
+"use client"
+import { motion } from "motion/react"
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 
 export interface RoadmapItem {
-  quarter: string;
-  title: string;
-  description: string;
-  status?: "done" | "in-progress" | "upcoming";
+  quarter: string
+  title: string
+  description: string
+  status?: "done" | "in-progress" | "upcoming"
 }
 
 export interface RoadmapCardProps {
-  title?: string;
-  description?: string;
-  items: RoadmapItem[];
+  title?: string
+  description?: string
+  items: RoadmapItem[]
 }
 
 export function RoadmapCard({
@@ -28,14 +28,14 @@ export function RoadmapCard({
   items,
 }: RoadmapCardProps) {
   return (
-    <Card className="w-full max-w-4xl shadow-xl hover:shadow-lg transiton-all duration-300">
+    <Card className="transiton-all w-full max-w-4xl shadow-xl duration-300 hover:shadow-lg">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="relative">
-          <div className="absolute left-0 right-0 top-4 h-px bg-border" />
+          <div className="absolute top-4 right-0 left-0 h-px bg-border" />
 
           <div className="flex justify-between">
             {items.map((item, index) => (
@@ -48,7 +48,7 @@ export function RoadmapCard({
               >
                 <motion.div
                   whileHover={{ scale: 1.2 }}
-                  className={`absolute left-1/2 top-2 flex h-4 w-4 -translate-x-1/2 items-center justify-center rounded-full ${
+                  className={`absolute top-2 left-1/2 flex h-4 w-4 -translate-x-1/2 items-center justify-center rounded-full ${
                     item.status === "done" || item.status === "in-progress"
                       ? "bg-primary"
                       : "bg-muted"
@@ -69,12 +69,14 @@ export function RoadmapCard({
                 </Badge>
 
                 <h4 className="text-sm font-medium">{item.title}</h4>
-                <p className="mt-1 text-xs text-muted-foreground">{item.description}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {item.description}
+                </p>
               </motion.div>
             ))}
           </div>
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

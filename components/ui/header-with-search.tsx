@@ -1,15 +1,11 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
 import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs"
-import { Grid2x2PlusIcon, MenuIcon, SearchIcon } from "lucide-react"
+import { MenuIcon, SearchIcon } from "lucide-react"
 
 import { Button, buttonVariants } from "@/components/ui/button"
-import {
-  SearchModal,
-  type SearchModalItem,
-} from "@/components/ui/search-modal"
+import { SearchModal, type SearchModalItem } from "@/components/ui/search-modal"
 import {
   Sheet,
   SheetContent,
@@ -98,17 +94,17 @@ export function Header({ leadingSlot }: HeaderProps) {
   return (
     <header
       className={cn(
-        "sticky top-0 bg-black z-50 h-[73px] w-full backdrop-blur-lg border-b flex items-center",
+        "sticky top-0 z-50 flex h-[73px] w-full items-center border-b bg-black backdrop-blur-lg",
         "bg-background/95 supports-backdrop-filter:bg-background/80"
       )}
     >
       <nav className="flex h-14 w-full items-center justify-between px-4">
-        <div className="flex min-w-0 max-w-[55%] items-center gap-1 sm:max-w-none sm:gap-2">
+        <div className="flex max-w-[55%] min-w-0 items-center gap-1 sm:max-w-none sm:gap-2">
           {leadingSlot}
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
-        <SearchModal data={SEARCH_PLACEHOLDER_ITEMS}>
+          <SearchModal data={SEARCH_PLACEHOLDER_ITEMS}>
             <Button
               type="button"
               variant="outline"
@@ -140,8 +136,6 @@ export function Header({ leadingSlot }: HeaderProps) {
             </Show>
           </div>
 
-
-
           <Show when="signed-in">
             <div className="lg:hidden">
               <UserButton />
@@ -161,7 +155,7 @@ export function Header({ leadingSlot }: HeaderProps) {
               </Button>
             </SheetTrigger>
             <SheetContent
-              className="bg-background/95 gap-0 backdrop-blur-lg supports-backdrop-filter:bg-background/80"
+              className="gap-0 bg-background/95 backdrop-blur-lg supports-backdrop-filter:bg-background/80"
               showCloseButton={false}
               side="left"
             >

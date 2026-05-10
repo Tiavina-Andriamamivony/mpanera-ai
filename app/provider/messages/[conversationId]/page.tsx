@@ -1,15 +1,13 @@
-"use client"
-
 import Link from "next/link"
 
-function RefusedScreen() {
+export default function ConversationPlaceholderPage() {
   return (
-    <div className="mx-auto flex max-w-xl flex-col items-center gap-5 text-center">
+    <main className="mx-auto flex max-w-2xl flex-col items-center gap-5 px-6 py-24 text-center">
       <p className="font-display text-4xl leading-tight sm:text-5xl">
-        Misaotra. Merci d&apos;avoir pris le temps de répondre.
+        Conversation démarrée ✨
       </p>
       <p className="max-w-md font-serif text-lg text-muted-foreground italic">
-        Nous transmettons au client. À très vite pour une autre mission.
+        Misaotra. La messagerie complète arrive bientôt.
       </p>
       <Link
         href="/"
@@ -17,8 +15,6 @@ function RefusedScreen() {
       >
         Retour à l&apos;accueil
       </Link>
-    </div>
+    </main>
   )
 }
-
-export { RefusedScreen }

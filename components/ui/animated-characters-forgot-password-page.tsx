@@ -150,8 +150,7 @@ function RequestForm({
           Mot de passe oublié ?
         </h1>
         <p className="text-sm text-muted-foreground">
-          Entrez votre email, nous vous enverrons un code pour le
-          réinitialiser.
+          Entrez votre email, nous vous enverrons un code pour le réinitialiser.
         </p>
       </div>
 
@@ -278,7 +277,7 @@ function ResetForm({
             <button
               type="button"
               onClick={onTogglePasswordVisible}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+              className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
               aria-label={
                 showPassword
                   ? "Masquer le mot de passe"

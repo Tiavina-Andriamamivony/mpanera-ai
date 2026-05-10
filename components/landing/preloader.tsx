@@ -11,10 +11,7 @@ function Preloader() {
 
   useEffect(() => {
     const fadeTimer = setTimeout(() => setPhase("fading"), VISIBLE_MS)
-    const goneTimer = setTimeout(
-      () => setPhase("gone"),
-      VISIBLE_MS + FADE_MS,
-    )
+    const goneTimer = setTimeout(() => setPhase("gone"), VISIBLE_MS + FADE_MS)
     return () => {
       clearTimeout(fadeTimer)
       clearTimeout(goneTimer)

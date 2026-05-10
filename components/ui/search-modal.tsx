@@ -58,7 +58,7 @@ export function SearchModal({ children, data }: SearchModalProps) {
         <Command className="bg-background md:rounded-lg md:border">
           <CommandInput
             className={cn(
-              "placeholder:text-muted-foreground flex h-12 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+              "flex h-12 w-full rounded-md bg-transparent py-3 text-sm outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
             )}
             placeholder="Rechercher…"
             value={query}

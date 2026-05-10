@@ -1,13 +1,13 @@
-import * as React from "react";
-import { cn } from "@/lib/utils"; // Assumes a standard shadcn setup
+import * as React from "react"
+import { cn } from "@/lib/utils" // Assumes a standard shadcn setup
 
 export interface GooeyLoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The primary color for the goo effect. Defaults to shadcn's primary color. */
-  primaryColor?: string;
+  primaryColor?: string
   /** The secondary color for the goo effect. Defaults to shadcn's secondary color. */
-  secondaryColor?: string;
+  secondaryColor?: string
   /** The color for the bottom border. Defaults to shadcn's border color. */
-  borderColor?: string;
+  borderColor?: string
 }
 
 const GooeyLoader = React.forwardRef<HTMLDivElement, GooeyLoaderProps>(
@@ -17,22 +17,29 @@ const GooeyLoader = React.forwardRef<HTMLDivElement, GooeyLoaderProps>(
       "--gooey-primary-color": primaryColor || "var(--primary)",
       "--gooey-secondary-color": secondaryColor || "var(--accent)",
       "--gooey-border-color": borderColor || "var(--border)",
-    } as React.CSSProperties;
+    } as React.CSSProperties
 
     return (
       <div
         ref={ref}
-        className={cn("relative flex items-center justify-center text-sm", className)}
+        className={cn(
+          "relative flex items-center justify-center text-sm",
+          className
+        )}
         style={style}
         role="status"
         aria-label="Loading"
         {...props}
       >
         {/* SVG filter for the gooey effect */}
-        <svg className="absolute w-0 h-0">
+        <svg className="absolute h-0 w-0">
           <defs>
             <filter id="gooey-loader-filter">
-              <feGaussianBlur in="SourceGraphic" stdDeviation={12} result="blur" />
+              <feGaussianBlur
+                in="SourceGraphic"
+                stdDeviation={12}
+                result="blur"
+              />
               <feColorMatrix
                 in="blur"
                 mode="matrix"
@@ -106,9 +113,9 @@ const GooeyLoader = React.forwardRef<HTMLDivElement, GooeyLoaderProps>(
         {/* The loader element that the styles target */}
         <div className="gooey-loader" />
       </div>
-    );
+    )
   }
-);
-GooeyLoader.displayName = "GooeyLoader";
+)
+GooeyLoader.displayName = "GooeyLoader"
 
-export { GooeyLoader };
+export { GooeyLoader }

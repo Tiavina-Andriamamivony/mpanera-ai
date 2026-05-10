@@ -2,11 +2,7 @@ import Link from "next/link"
 import { ArrowLeftIcon, UserIcon } from "lucide-react"
 
 import type { ClientProfile } from "@/lib/demo-client"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -32,7 +28,7 @@ export function ClientDetailView({ profile }: ClientDetailViewProps) {
         </Link>
       </Button>
 
-      <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+      <p className="text-sm font-medium tracking-[0.2em] text-muted-foreground uppercase">
         Client
       </p>
 
@@ -68,7 +64,9 @@ export function ClientDetailView({ profile }: ClientDetailViewProps) {
           <Separator />
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button size="lg" asChild>
-              <Link href="/app/ai-form">Ouvrir le formulaire avec l&apos;IA</Link>
+              <Link href="/app/ai-form">
+                Ouvrir le formulaire avec l&apos;IA
+              </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
               <Link href="/app">Retour à l&apos;application</Link>

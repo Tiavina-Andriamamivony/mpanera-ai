@@ -43,7 +43,8 @@ function useAuthCtas(): AuthCtas {
   return {
     primary: {
       href: home,
-      label: role === "provider" ? "Voir mes demandes" : "Reprendre ma recherche",
+      label:
+        role === "provider" ? "Voir mes demandes" : "Reprendre ma recherche",
     },
     secondary: { href: home, label: "Mon espace" },
     isSignedIn: true,
@@ -222,8 +223,8 @@ function HowItWorks() {
           <span className="text-primary italic">zéro complication.</span>
         </h2>
         <p className="hidden max-w-xs text-muted-foreground sm:block">
-          Conçu pour tout le monde, pas seulement pour ceux qui sont à l&apos;aise
-          avec le digital.
+          Conçu pour tout le monde, pas seulement pour ceux qui sont à
+          l&apos;aise avec le digital.
         </p>
       </div>
 
@@ -235,7 +236,7 @@ function HowItWorks() {
           >
             <span className="font-display text-7xl text-accent">{s.n}</span>
             <h3 className="mt-4 font-display text-2xl">{s.title}</h3>
-            <p className="text-muted-foreground mt-3">{s.body}</p>
+            <p className="mt-3 text-muted-foreground">{s.body}</p>
           </li>
         ))}
       </ol>
@@ -287,7 +288,7 @@ function Categories() {
         <h2 className="font-display text-5xl leading-[0.95] sm:text-6xl">
           Tout ce qu&apos;il vous faut,
           <br />
-          <span className="italic text-primary">en quelques mots.</span>
+          <span className="text-primary italic">en quelques mots.</span>
         </h2>
       </div>
 
@@ -330,7 +331,7 @@ function Trust() {
             <br />
             ça se voit.
           </h2>
-          <p className="text-muted-foreground mt-6 text-lg">
+          <p className="mt-6 text-lg text-muted-foreground">
             Chaque prestataire est vérifié à la main. Les prix sont annoncés
             d&apos;avance. Les avis viennent de vrais clients.
           </p>
@@ -374,11 +375,11 @@ function TrustCard({
     <div
       className={`rounded-3xl border border-border bg-card p-6 ${wide ? "sm:col-span-2" : ""}`}
     >
-      <div className="bg-primary/10 text-primary grid size-10 place-items-center rounded-full">
+      <div className="grid size-10 place-items-center rounded-full bg-primary/10 text-primary">
         {icon}
       </div>
       <h3 className="mt-4 font-serif text-xl">{title}</h3>
-      <p className="text-muted-foreground mt-2 text-sm">{body}</p>
+      <p className="mt-2 text-sm text-muted-foreground">{body}</p>
     </div>
   )
 }
@@ -418,7 +419,7 @@ function Voices() {
     <section className="relative mx-auto max-w-7xl px-6 py-24 lg:px-10">
       <div className="mb-14 max-w-2xl">
         <h2 className="font-display text-5xl leading-[0.95] sm:text-6xl">
-          <span className="italic text-primary">Des vraies personnes,</span>
+          <span className="text-primary italic">Des vraies personnes,</span>
           <br />
           de vrais résultats.
         </h2>
@@ -434,7 +435,7 @@ function Voices() {
             key={v.name}
             className={`relative rounded-3xl border border-border bg-card p-7 shadow-xl shadow-primary/5 transition hover:shadow-primary/15 ${v.rotate} hover:rotate-0`}
           >
-            <p className="font-serif text-lg italic leading-relaxed">
+            <p className="font-serif text-lg leading-relaxed italic">
               « {v.quote} »
             </p>
             <div className="mt-6 flex items-center gap-3">
@@ -485,7 +486,7 @@ function FinalCta() {
   const ctas = useAuthCtas()
   return (
     <section className="relative mx-auto mb-24 max-w-7xl px-6 lg:px-10">
-      <div className="bg-primary text-primary-foreground relative overflow-hidden rounded-[2rem] px-8 py-16 sm:px-16 sm:py-24">
+      <div className="relative overflow-hidden rounded-[2rem] bg-primary px-8 py-16 text-primary-foreground sm:px-16 sm:py-24">
         <div
           aria-hidden
           className="absolute -top-24 -right-24 size-[24rem] rounded-full bg-accent/30 blur-3xl"
@@ -496,7 +497,7 @@ function FinalCta() {
         />
         <p
           aria-hidden
-          className="font-display absolute -bottom-8 left-0 -z-0 w-full overflow-hidden text-center text-[clamp(8rem,22vw,22rem)] leading-none tracking-[-0.05em] whitespace-nowrap text-primary-foreground/[0.07] select-none"
+          className="absolute -bottom-8 left-0 -z-0 w-full overflow-hidden text-center font-display text-[clamp(8rem,22vw,22rem)] leading-none tracking-[-0.05em] whitespace-nowrap text-primary-foreground/[0.07] select-none"
         >
           mpanera
         </p>
@@ -524,7 +525,7 @@ function FinalCta() {
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
               href={ctas.primary.href}
-              className="group bg-background text-foreground inline-flex items-center gap-3 rounded-full px-7 py-4 text-base font-medium shadow-xl transition hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-3 rounded-full bg-background px-7 py-4 text-base font-medium text-foreground shadow-xl transition hover:-translate-y-0.5"
             >
               {ctas.isSignedIn ? ctas.primary.label : "Commencer maintenant"}
               <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -532,7 +533,7 @@ function FinalCta() {
             {!ctas.isSignedIn && (
               <Link
                 href="/sign-up"
-                className="border-primary-foreground/30 hover:bg-primary-foreground/10 inline-flex items-center gap-2 rounded-full border px-7 py-4 text-base font-medium"
+                className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-7 py-4 text-base font-medium hover:bg-primary-foreground/10"
               >
                 Devenir prestataire
               </Link>

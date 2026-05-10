@@ -21,7 +21,7 @@ function AuthShell({ aside, children }: AuthShellProps) {
           {aside}
         </div>
 
-        <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]" />
+        <div className="bg-grid-white/[0.05] absolute inset-0 bg-[size:20px_20px]" />
         <div className="absolute top-1/4 right-1/4 size-64 rounded-full bg-primary-foreground/10 blur-3xl" />
         <div className="absolute bottom-1/4 left-1/4 size-96 rounded-full bg-primary-foreground/5 blur-3xl" />
       </div>

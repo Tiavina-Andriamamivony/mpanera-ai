@@ -263,7 +263,7 @@ function SignUpForm({
             <button
               type="button"
               onClick={onTogglePasswordVisible}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+              className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
               aria-label={
                 showPassword
                   ? "Masquer le mot de passe"

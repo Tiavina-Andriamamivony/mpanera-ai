@@ -381,12 +381,8 @@ function AnimatedCharactersScene({
               eyeColor="white"
               pupilColor="#2D2D2D"
               isBlinking={isBlackBlinking}
-              forceLookX={
-                isPanic ? -4 : isLookingAtEachOther ? 0 : undefined
-              }
-              forceLookY={
-                isPanic ? -4 : isLookingAtEachOther ? -4 : undefined
-              }
+              forceLookX={isPanic ? -4 : isLookingAtEachOther ? 0 : undefined}
+              forceLookY={isPanic ? -4 : isLookingAtEachOther ? -4 : undefined}
             />
           ))}
         </div>

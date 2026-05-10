@@ -1,7 +1,16 @@
 import type { Metadata } from "next"
-import { Box, House, MessageSquareText, PanelsTopLeft, ReceiptText } from "lucide-react"
+import {
+  Box,
+  House,
+  MessageSquareText,
+  PanelsTopLeft,
+  ReceiptText,
+} from "lucide-react"
 
-import { ProjectCards, type Project } from "@/components/ui/animated-project-cards"
+import {
+  ProjectCards,
+  type Project,
+} from "@/components/ui/animated-project-cards"
 import WorkspaceForm from "@/components/ui/form-layout"
 import { InteractiveBrokerCard } from "@/components/ui/interactive-broker-card"
 import { RoadmapCard, type RoadmapItem } from "@/components/ui/roadmap-card"
@@ -61,7 +70,9 @@ export default async function ProviderDetailsPage({
         "J'ai besoin d'aide rapidement pour un probleme relevant de " +
         profile.category.toLowerCase() +
         ". Merci de me dire si vous etes disponible, quelles informations supplementaires vous souhaitez recevoir, et si une intervention est possible a la date demandee.",
-      location: profile.isNearby ? "Chez le client, a proximite" : "Intervention en ville",
+      location: profile.isNearby
+        ? "Chez le client, a proximite"
+        : "Intervention en ville",
       timeAgo: "Aujourd'hui",
       logoColor: "bg-blue-500",
       logoIcon: "!",
@@ -76,7 +87,9 @@ export default async function ProviderDetailsPage({
       categories: [profile.category, "Reponses recues", "A verifier"],
       description:
         "Le client a repondu aux questions complementaires et a ajoute des precisions pour vous aider a evaluer la mission avant la confirmation finale.",
-      location: profile.isNearby ? "Adresse communiquee a proximite" : "Intervention en ville",
+      location: profile.isNearby
+        ? "Adresse communiquee a proximite"
+        : "Intervention en ville",
       timeAgo: "Reponse recente",
       logoColor: "bg-orange-500",
       logoIcon: "R",
@@ -99,7 +112,11 @@ export default async function ProviderDetailsPage({
       title: "Precisions libres du client",
       pricePerHour: "Informations complementaires a relire",
       status: "Not Paid",
-      categories: ["Texte libre", "Details techniques", "Validation en attente"],
+      categories: [
+        "Texte libre",
+        "Details techniques",
+        "Validation en attente",
+      ],
       description:
         "Le client ajoute des precisions libres sur le probleme, les contraintes de lieu ou les specifications qu'il connait deja afin de vous aider a confirmer la prise en charge.",
       location: "Informations partagees par le client",
@@ -112,7 +129,8 @@ export default async function ProviderDetailsPage({
     {
       quarter: "Etape 1",
       title: "Demande lue",
-      description: "La mission et le probleme brut du client ont ete relus par le prestataire.",
+      description:
+        "La mission et le probleme brut du client ont ete relus par le prestataire.",
       status: "done",
     },
     {
@@ -125,13 +143,15 @@ export default async function ProviderDetailsPage({
     {
       quarter: "Etape 3",
       title: "Reponses recues",
-      description: "Le client a renvoye le formulaire dynamique avec ses precisions.",
+      description:
+        "Le client a renvoye le formulaire dynamique avec ses precisions.",
       status: "in-progress",
     },
     {
       quarter: "Etape 4",
       title: "Confirmation finale",
-      description: "Le prestataire doit maintenant confirmer avant l'ouverture de la messagerie.",
+      description:
+        "Le prestataire doit maintenant confirmer avant l'ouverture de la messagerie.",
       status: "upcoming",
     },
   ]
@@ -156,10 +176,10 @@ export default async function ProviderDetailsPage({
 
       <Tabs defaultValue="demande" className="mx-auto w-full">
         <ScrollArea>
-          <TabsList className="mb-3 mx-auto gap-1 bg-transparent w-full">
+          <TabsList className="mx-auto mb-3 w-full gap-1 bg-transparent">
             <TabsTrigger
               value="demande"
-              className="rounded-md w-fit data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-none"
+              className="w-fit rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-none"
             >
               <House
                 className="-ms-0.5 me-1.5 opacity-60"
@@ -240,7 +260,8 @@ export default async function ProviderDetailsPage({
         </TabsContent>
         <TabsContent value="messagerie">
           <p className="p-4 pt-1 text-center text-xs text-muted-foreground">
-            Conversation entre le client et le prestataire apres validation de la mission.
+            Conversation entre le client et le prestataire apres validation de
+            la mission.
           </p>
         </TabsContent>
       </Tabs>

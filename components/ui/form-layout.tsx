@@ -1,11 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Check, CircleCheck, ExternalLink } from "lucide-react"
+import { Check, ExternalLink } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -18,21 +17,6 @@ import {
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-
-const highlights = [
-  {
-    id: 1,
-    feature: "Demander les informations que le client n'a pas encore precisees",
-  },
-  {
-    id: 2,
-    feature: "Fixer une pretention salariale claire avant l'envoi au client",
-  },
-  {
-    id: 3,
-    feature: "Generer un formulaire dynamique avant la confirmation finale",
-  },
-]
 
 const plans = [
   {
@@ -79,7 +63,7 @@ export default function WorkspaceForm() {
 
   return (
     <div className="flex w-full items-center justify-center p-10">
-      <form className="w-full max-w-3xl space-y-8 mx-auto">
+      <form className="mx-auto w-full max-w-3xl space-y-8">
         <h3 className="text-xl font-semibold text-foreground">
           Qualifier la demande avant reponse au client
         </h3>
@@ -92,7 +76,11 @@ export default function WorkspaceForm() {
                     Type de mission
                   </Label>
                   <Select defaultValue="1">
-                    <SelectTrigger id="organization" name="organization" className="mt-2 w-full">
+                    <SelectTrigger
+                      id="organization"
+                      name="organization"
+                      className="mt-2 w-full"
+                    >
                       <SelectValue placeholder="Choisir une mission" />
                     </SelectTrigger>
                     <SelectContent>
@@ -124,14 +112,16 @@ export default function WorkspaceForm() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="bas">Fourchette basse</SelectItem>
-                    <SelectItem value="standard">Fourchette standard</SelectItem>
+                    <SelectItem value="standard">
+                      Fourchette standard
+                    </SelectItem>
                     <SelectItem value="eleve">Fourchette elevee</SelectItem>
                     <SelectItem value="sur-mesure">Sur mesure</SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Choisis le niveau de pretention salariale avant de generer le formulaire pour le
-                  client
+                  Choisis le niveau de pretention salariale avant de generer le
+                  formulaire pour le client
                 </p>
               </div>
             </div>
@@ -141,7 +131,9 @@ export default function WorkspaceForm() {
             <RadioGroup
               value={selected.name}
               onValueChange={(value) =>
-                setSelected(plans.find((plan) => plan.name === value) || plans[0])
+                setSelected(
+                  plans.find((plan) => plan.name === value) || plans[0]
+                )
               }
               className="mt-4 space-y-4"
             >
@@ -162,7 +154,9 @@ export default function WorkspaceForm() {
                     </div>
                     <div className="w-full">
                       <p className="leading-6">
-                        <span className="font-semibold text-foreground">{plan.name}</span>
+                        <span className="font-semibold text-foreground">
+                          {plan.name}
+                        </span>
                         {plan.isRecommended && (
                           <Badge variant="secondary" className="ml-2">
                             recommended
@@ -171,8 +165,14 @@ export default function WorkspaceForm() {
                       </p>
                       <ul className="mt-2 space-y-1">
                         {plan.features.map((feature, index) => (
-                          <li key={index} className="flex items-center gap-2 text-sm">
-                            <Check className="h-4 w-4 text-muted-foreground" aria-hidden={true} />
+                          <li
+                            key={index}
+                            className="flex items-center gap-2 text-sm"
+                          >
+                            <Check
+                              className="h-4 w-4 text-muted-foreground"
+                              aria-hidden={true}
+                            />
                             {feature.feature}
                           </li>
                         ))}
@@ -188,14 +188,15 @@ export default function WorkspaceForm() {
                       <ExternalLink className="h-4 w-4" aria-hidden={true} />
                     </a>
                     <div>
-                      <span className="text-lg font-semibold text-foreground">{plan.price}</span>
+                      <span className="text-lg font-semibold text-foreground">
+                        {plan.price}
+                      </span>
                     </div>
                   </div>
                 </label>
               ))}
             </RadioGroup>
           </div>
-
         </div>
         <Separator className="my-10" />
         <div className="flex items-center justify-end space-x-4">
