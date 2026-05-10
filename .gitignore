@@ -34,3 +34,12 @@ pnpm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# clerk configuration (can include secrets)
+/.clerk/
+
+
+# lockfile
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
